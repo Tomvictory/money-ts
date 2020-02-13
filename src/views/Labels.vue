@@ -1,5 +1,5 @@
 <template>
-<Layout>Labels</Layout>
+<Layout>labels</Layout>
 </template>
 
 <script lang="ts">

@@ -5,8 +5,9 @@
     </div>
     <ul class="current">
       <li v-for="tag in dataSource" :key="tag"
-      :class="{selected:selectedTags.indexOf(tag)>=0}"
-      @click="toggle(tag)">{{tag}}</li>
+          :class="{selected:selectedTags.indexOf(tag)>=0}"
+          @click="toggle(tag)">{{tag}}
+      </li>
     </ul>
   </div>
 </template>
@@ -27,6 +28,7 @@
       } else {
         this.selectedTags.push(tag);
       }
+      this.$emit('update:value', this.selectedTags);
     }
 
     create() {
@@ -56,15 +58,16 @@
 
       > li {
         $bg: #d9d9d9;
-        background:$bg;
+        background: $bg;
         $labels-height: 24px;
         height: $labels-height;
         border-radius: $labels-height;
         padding: 1px 16px;
         margin-right: 12px;
         margin-top: 4px;
-        &.selected{
-          background: darken($bg,50%);
+
+        &.selected {
+          background: darken($bg, 50%);
           color: white;
         }
       }

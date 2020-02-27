@@ -3,7 +3,7 @@
     <label class="notes">
       <span class="name">备注</span>
       <input type="text"
-             v-model="value"
+             :value="value"
              @input="onValueChanged($event.target.value)"
              :placeholder="placeholder">
     </label>
@@ -16,7 +16,7 @@
 
   @Component
   export default class FormItem extends Vue {
-    value = '';
+    @Prop({default: ''}) value!: string;
 
     @Prop({required: true}) fieldName!: string;
     @Prop() placeholder?: string;

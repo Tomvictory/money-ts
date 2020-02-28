@@ -1,8 +1,15 @@
+import clone from '@/lib/clone';
+
 const localStorageKeyName='recordList';
 const recordListModel= {
   data: [] as RecordItem[],
   clone(data: RecordItem[] | RecordItem){
     return JSON.parse(JSON.stringify(data));
+  },
+  create(record: RecordItem){
+    const record2 = clone(record);
+    record2.createTime = new Date();
+    this.data.push(record2);
   },
   fetch() {
     this.data = JSON.parse(window.localStorage.getItem(localStorageKeyName) || '[]') as RecordItem[];

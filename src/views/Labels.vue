@@ -3,7 +3,7 @@
     <div class="tags">
       <router-link :to="`/labels/edit/${tag.id}`"
                    class="tag"
-                   v-for="tag in tags" :key="tag.id">
+                   v-for="tag in tagList" :key="tag.id">
         <span>{{tag.name}}</span>
         <Icon name="right"/>
       </router-link>
@@ -19,11 +19,15 @@
   import {Component} from 'vue-property-decorator';
   import Button from '@/components/Button.vue';
 
+  const map: { [key: string]: string } = {
+    'tag name dupliceted': '标签名重复了'
+  };
+
   @Component({
     components: {Button},
   })
   export default class Labels extends Vue {
-    get tags() {
+    get tagList() {
       return this.$store.state.tagList;
     }
 
@@ -37,6 +41,10 @@
         return window.alert('标签名不能为空');
       }
       this.$store.commit('createTag', name);
+      if (this.$store.state.createTagError){
+        return  window.alert(map[this.$store.state.createTagError.message] || '未知错误');
+      }
+      window.alert('添加成功');
     }
   }
 </script>

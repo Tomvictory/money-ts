@@ -4,9 +4,9 @@
       <button @click="create">新增标签</button>
     </div>
     <ul class="current">
-      <li v-for="tag in tags" :key="tag.id"
-          :class="{selected:selectedTags.indexOf(tag.name)>=0}"
-          @click="toggle(tag.name)">{{tag.name}}
+      <li v-for="tag in tagList" :key="tag.id"
+          :class="{selected:selectedTags.indexOf(tag)>=0}"
+          @click="toggle(tag)">{{tag.name}}
       </li>
     </ul>
   </div>
@@ -16,19 +16,23 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
 
+  const map: { [key: string]: string } = {
+    'tag name dupliceted': '标签名重复了'
+  };
+
   @Component
   export default class Tags extends Vue {
-    get tags(){
+    get tagList() {
       return this.$store.state.tagList;
     }
 
-    selectedTags: string[] = [];
+    selectedTags: Tag[] = [];
 
-    created(){
+    created() {
       this.$store.commit('fetchTags');
     }
 
-    toggle(tag: string) {
+    toggle(tag: Tag) {
       const index = this.selectedTags.indexOf(tag);
       if (index >= 0) {
         this.selectedTags.splice(index, 1);
@@ -43,7 +47,11 @@
       if (!name) {
         return window.alert('标签名不能为空');
       }
-      this.$store.commit('createTag',name);
+      this.$store.commit('createTag', name);
+      if (this.$store.state.createTagError){
+        return  window.alert(map[this.$store.state.createTagError.message] || '未知错误');
+      }
+      window.alert('添加成功');
     }
   }
 </script>

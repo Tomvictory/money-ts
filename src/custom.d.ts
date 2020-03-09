@@ -1,19 +1,18 @@
+type RootState = {
+  recordList: RecordItem[];
+  tagList: Tag[];
+  currentTag?: Tag;
+  createRecordError: Error | null;
+  createTagError: Error | null;
+}
 type RecordItem = {
-  tags: string[];
+  tags: Tag[];
   notes: string;
   type: string;
   amount: number;
-  createTime?: Date;
+  createTime?: string;
 }
 type Tag = {
   id: string;
   name: string;
-}
-type TagListModel = {
-  data: Tag[];
-  fetch: () => Tag[];
-  create: (name: string) => 'success' | 'dupliceted';
-  save: () => void;
-  update: (id: string, name: string) => 'success' | 'not found' | 'dupliceted';
-  remove: (id: string) => boolean;
 }

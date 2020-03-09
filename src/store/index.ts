@@ -6,16 +6,12 @@ import router from '@/router';
 
 Vue.use(Vuex);
 
-type RootState = {
-  tagList: Tag[];
-  recordList: RecordItem[];
-  currentTag?: Tag;
-}
-
 const store = new Vuex.Store({
   state: {
-    tagList: [] as Tag[],
-    recordList: [] as RecordItem[],
+    createTagError: null,
+    createRecordError: null,
+    tagList: [],
+    recordList: [],
     currentTag: undefined
   } as RootState,
   mutations: {
@@ -23,11 +19,11 @@ const store = new Vuex.Store({
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
     },
 
-    createRecord(state, record) {
+    createRecord(state, record: RecordItem) {
       const record2 = clone(record);
-      record2.createTime = new Date();
+      record2.createTime = new Date().toISOString();
       state.recordList.push(record2);
-      store.commit('saveRecord');
+      store.commit('saveRecords');
     },
 
     fetchRecords(state) {
@@ -40,17 +36,24 @@ const store = new Vuex.Store({
 
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
+      if (!state.tagList || state.tagList.length === 0) {
+        store.commit('createTag', '衣');
+        store.commit('createTag', '食');
+        store.commit('createTag', '住');
+        store.commit('createTag', '行');
+      }
     },
 
-    createTag(state, name: string,) {
+    createTag(state, name: string) {
+      state.createTagError = null;
       const names = state.tagList.map(item => item.name);
       if (names.indexOf(name) >= 0) {
-        window.alert('标签名重复');
+        state.createTagError = new Error('tag name dupliceted');
+        return;
       }
       const id = createId().toString();
-      state.tagList.push({id, name: name});
+      state.tagList.push({id: id, name: name});
       store.commit('saveTags');
-      window.alert('添加成功');
     },
 
     setCurrentTag(state, id: string) {
@@ -65,12 +68,12 @@ const store = new Vuex.Store({
           break;
         }
       }
-      if(index>=0){
+      if (index >= 0) {
         state.tagList.splice(index, 1);
         store.commit('saveTags');
         router.back();
-      }else{
-        window.alert('删除失败')
+      } else {
+        window.alert('删除失败');
       }
     },
     updateTag(state, payload: { id: string; name: string }) {

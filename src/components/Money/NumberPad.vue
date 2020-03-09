@@ -90,6 +90,8 @@
         border: none;
         color: white;
 
+
+
         &.ok {
           height: 64*2px;
           float: right;
@@ -99,7 +101,7 @@
           width: 25*2%;
         }
 
-        $bg: #777;
+        $bg: #555;
 
         &:nth-child(1) {
           background: $bg;

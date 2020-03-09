@@ -1,7 +1,7 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
-    <Tabs :data-source="recordTypeList" :value.sync="record.type"/>
+    <Tabs :data-source="recordTypeList" :value.sync="record.type" class-prefix="type"/>
     <FormItem field-name="备注"
               placeholder="请在这里输入备注"
               :value.sync="record.notes"/>
@@ -37,6 +37,8 @@
     saveRecord() {
       if(!this.record.tags || this.record.tags.length === 0){
         return  window.alert('请至少选择一个标签');
+      }else if (this.record.amount === 0 || !this.record.amount){
+        return  window.alert('请键入金额');
       }
       this.$store.commit('createRecord', this.record);
       if(this.$store.state.createRecordError === null){
@@ -48,9 +50,26 @@
 
 </script>
 <style lang="scss" scoped>
+  @import "~@/assets/style/helper.scss";
+
   ::v-deep .layout-content {
     display: flex;
     flex-direction: column-reverse;
+  }
+
+  ::v-deep {
+    .type-tabs-item {
+      background: #555;
+      color: white;
+
+      &.selected {
+        background: $color-highlight;
+
+        &::after {
+          display: none;
+        }
+      }
+    }
   }
 
 </style>

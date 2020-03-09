@@ -1,12 +1,10 @@
 <template>
-  <div>
     <ul class="tabs" :class="{[classPrefix+'-tabs']: classPrefix }">
       <li v-for="item in dataSource" :key="item.value" class="tabs-item"
           :class="liClass(item)"
           @click="select(item)">{{item.text}}
       </li>
     </ul>
-  </div>
 </template>
 
 <script lang="ts">

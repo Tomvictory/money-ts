@@ -50,7 +50,7 @@
     }
 
     tagString(tags: Tag[]) {
-      return tags.length === 0 ? '无' : tags.map(t=>t).join(',');
+      return tags.length === 0 ? '无' : tags.map(t => t.name).join(',');
     }
 
     get recordList() {
@@ -92,16 +92,21 @@
 </script>
 
 <style lang="scss" scoped>
-  .noResult{
+  @import "~@/assets/style/helper.scss";
+
+  .noResult {
     text-align: center;
     padding: 16px 16px;
   }
+
   ::v-deep {
     .type-tabs-item {
-      background: #c4c4c4;
+      background: #333;
+      color: white;
 
       &.selected {
-        background: white;
+        background: $color-highlight;
+        color: #333;
 
         &::after {
           display: none;

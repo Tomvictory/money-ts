@@ -44,12 +44,12 @@
 
     create() {
       const name = window.prompt('请输入标签名');
-      if (!name) {
+      if (name === '') {
         return window.alert('标签名不能为空');
-      }
+      } else if (!name) {return;}
       this.$store.commit('createTag', name);
-      if (this.$store.state.createTagError){
-        return  window.alert(map[this.$store.state.createTagError.message] || '未知错误');
+      if (this.$store.state.createTagError) {
+        return window.alert(map[this.$store.state.createTagError.message] || '未知错误');
       }
       window.alert('添加成功');
     }
@@ -57,6 +57,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "~@/assets/style/helper.scss";
+
   .tags {
     background: white;
     font-size: 14px;
@@ -70,8 +72,8 @@
       flex-wrap: wrap;
 
       > li {
-        $bg: #d9d9d9;
-        background: $bg;
+        background: #666;
+        color: white;
         $labels-height: 24px;
         height: $labels-height;
         border-radius: $labels-height;
@@ -80,8 +82,8 @@
         margin-top: 4px;
 
         &.selected {
-          background: darken($bg, 50%);
-          color: white;
+          background: $color-highlight;
+          color: #333;
         }
       }
     }
